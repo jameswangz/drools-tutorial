@@ -1,0 +1,13 @@
+
+--- Definition ---
+
+Drools is a Rule Engine that uses the rule-based approach to implement an Expert System and is more correctly classified as a Production Rule System.
+
+
+--- Production Rule ---
+
+when
+    <conditions>
+then
+    <actions>;
+
