@@ -11,3 +11,37 @@ when
 then
     <actions>;
 
+
+The Knowlege Base is a repository of all the application's knowledge definitions. It may contain rules, processes, functions, and type models.
+
+--- Rules File Structure ---
+
+package package-name
+
+imports
+
+globals
+
+functions
+
+queries
+
+rules
+
+
+--- Package ---
+
+The package name itself is the namespace, and is not related to files or folders in any way.
+
+--- Globals ---
+
+Globals are not designed to share data between rules and they should never be used for that purpose. 
+
+--- Pattern ---
+
+Patterns may refer to superclasses or even interfaces, thereby potentially matching facts from many different classes.
+
+
+
+
+

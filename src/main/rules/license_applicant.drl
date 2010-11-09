@@ -9,9 +9,9 @@ rule "Is of valid age"
 		$a.setValid( false );
 end
 
-#rule "Application was made this year"
-#	when
-#		$a : Application( dateApplied > "2010-01-01" )
-#	then
-#		$a.setValid( false );
-#end
+rule "Application was made this year"
+	when
+		$a : Application( dateApplied > "2010-01-01" )
+	then
+		$a.setValid( false );
+end

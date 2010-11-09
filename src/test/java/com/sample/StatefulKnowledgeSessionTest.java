@@ -49,5 +49,4 @@ public class StatefulKnowledgeSessionTest extends Assert {
 		ksession.dispose();
 	}
 	
-	
 }

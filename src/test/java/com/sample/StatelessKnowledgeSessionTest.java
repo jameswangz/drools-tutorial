@@ -5,11 +5,17 @@ import java.util.Arrays;
 import org.drools.KnowledgeBase;
 import org.drools.runtime.StatelessKnowledgeSession;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 
 public class StatelessKnowledgeSessionTest extends Assert {
 
+	@Before
+	public void before() {
+		System.setProperty("drools.dateformat", "yyyy-MM-dd");
+	}
+	
 	@Test
 	public void age() {
 		StatelessKnowledgeSession ksession = kbase().newStatelessKnowledgeSession();
