@@ -1,7 +1,6 @@
 package com.snda.infrastrure.drools.tutorial;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import hamcrest.Ensure;
 
 import org.drools.KnowledgeBase;
 import org.drools.builder.ResourceType;
@@ -11,7 +10,7 @@ import org.junit.Test;
 import com.google.common.collect.ImmutableMap;
 
 
-public class SimpleDSLTest {
+public class SimpleDSLTest extends Ensure {
 	
 	@Test
 	public void test() {
@@ -19,11 +18,11 @@ public class SimpleDSLTest {
 		
 		Customer david = new Customer("David");
 		ksession.execute(david);
-		assertTrue(david.isGreeted());
+		ensureThat(david.isGreeted());
 		
 		Customer james = new Customer("James");
 		ksession.execute(james);
-		assertFalse(james.isGreeted());
+		not(james.isGreeted());
 	}
 
 	private KnowledgeBase kbase() {

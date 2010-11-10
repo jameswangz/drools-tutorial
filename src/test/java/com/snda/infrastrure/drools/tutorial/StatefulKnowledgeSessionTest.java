@@ -1,5 +1,7 @@
 package com.snda.infrastrure.drools.tutorial;
 
+import hamcrest.Ensure;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,13 +9,12 @@ import org.drools.KnowledgeBase;
 import org.drools.builder.ResourceType;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.rule.FactHandle;
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableMap;
 
 
-public class StatefulKnowledgeSessionTest extends Assert {
+public class StatefulKnowledgeSessionTest extends Ensure {
 	
 	private static final String KITCHEN = "kitchen";
 	private static final String BEDROOM = "bedroom";
