@@ -1,5 +1,8 @@
 package com.sample;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
@@ -11,16 +14,22 @@ import org.drools.io.ResourceFactory;
 
 public abstract class KnowledgeBases {
 
-	public static KnowledgeBase of(String resourceClassPath) {
+	public static KnowledgeBase of(Map<String, ResourceType> resourceMap) {
 		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-		kbuilder.add(ResourceFactory.newClassPathResource(resourceClassPath), ResourceType.DRL);
+		
+		for (Entry<String, ResourceType> entry : resourceMap.entrySet()) {
+			kbuilder.add(ResourceFactory.newClassPathResource(entry.getKey()), entry.getValue());
+		}
+		
 		KnowledgeBuilderErrors errors = kbuilder.getErrors();
+		
 		if (!errors.isEmpty()) {
 			for (KnowledgeBuilderError error : errors) {
 				System.err.println(error);
 			}
 			throw new IllegalArgumentException("Couldn't parse knowledge");
 		}
+		
 		KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
 		kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
 		return kbase;

@@ -4,10 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.drools.KnowledgeBase;
+import org.drools.builder.ResourceType;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.rule.FactHandle;
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.google.common.collect.ImmutableMap;
 
 
 public class StatefulKnowledgeSessionTest extends Assert {
@@ -19,7 +22,7 @@ public class StatefulKnowledgeSessionTest extends Assert {
 
 	@Test
 	public void test() {
-		KnowledgeBase kbase = KnowledgeBases.of("fire_alarm.drl");
+		KnowledgeBase kbase = KnowledgeBases.of(ImmutableMap.of("fire_alarm.drl", ResourceType.DRL));
 		StatefulKnowledgeSession ksession = kbase.newStatefulKnowledgeSession();
 
 		String[] names = new String[] {KITCHEN, BEDROOM, OFFICE, LIVINGROOM};

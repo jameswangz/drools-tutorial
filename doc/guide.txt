@@ -41,7 +41,130 @@ Globals are not designed to share data between rules and they should never be us
 
 Patterns may refer to superclasses or even interfaces, thereby potentially matching facts from many different classes.
 
+--- Date ---
+
+The date format "dd-mmm-yyyy" is supported by default. You can customize this by providing an alternative date format mask as the System property named drools.dateformat.
+
+--- eval ---
+
+the best practice is to add it as the last conditional element in the LHS of a rule.
+
+--- not ---
+
+Think of "not" as meaning "there must be none of...".
+
+--- exists ---
+
+Think of "exists" as meaning "there is at least one..".
+
+--- forall ---
+
+Also, it is important to note that forall is a scope delimiter. Therefore, it can use any previously bound variable, but no variable bound inside it will be available for use outside of it.
 
 
+--- collect ---
+
+Variables bound before the collect CE are in the scope of both source and result patterns and therefore you can use them to constrain both your source and result patterns. But note that collect is a scope delimiter for bindings, so that any binding made inside of it is not available for use outside of it.
+
+Example
+
+------------------------------------------------------------------------------
+
+import java.util.LinkedList;
+
+rule "Send a message to all mothers"
+when
+    $town : Town( name == 'Paris' )
+    $mothers : LinkedList() 
+               from collect( Person( gender == 'F', children > 0 ) 
+                             from $town.getPeople() 
+                           )
+then
+    # send a message to all mothers
+end
+
+------------------------------------------------------------------------------
+
+--- accumulate ---
+
+similar to inject, reduce
+
+
+<result pattern> from accumulate( <source pattern>,
+                                  init( <init code> ),
+                                  action( <action code> ),
+                                  reverse( <reverse code> ),
+                                  result( <result expression> ) )
+
+Original example
+
+------------------------------------------------------------------------------
+
+rule "Apply 10% discount to orders over US$ 100,00"
+when
+    $order : Order()
+    $total : Number( doubleValue > 100 ) 
+             from accumulate( OrderItem( order == $order, $value : value ),
+                              init( double total = 0; ),
+                              action( total += $value; ),
+                              reverse( total -= $value; ),
+                              result( total ) )
+then
+    # apply discount to $order
+end
+
+------------------------------------------------------------------------------
+
+With accumulate function
+
+
+------------------------------------------------------------------------------
+
+rule "Apply 10% discount to orders over US$ 100,00"
+when
+    $order : Order()
+    $total : Number( doubleValue > 100 ) 
+             from accumulate( OrderItem( order == $order, $value : value ),
+                              sum( $value ) )
+then
+    # apply discount to $order
+end
+
+------------------------------------------------------------------------------
+
+The Right Hand Side (RHS)
+
+--- modify ---
+
+modify ( <fact-expression> ) {
+    <expression> [ , <expression> ]*
+}
+
+------------------------------------------------------------------------------
+
+rule "modify stilton"
+when
+    $stilton : Cheese(type == "stilton")
+then
+    modify( $stilton ){
+        setPrice( 20 ),
+        setAge( "overripe" )
+    }
+end
+
+------------------------------------------------------------------------------
+
+--- query ---
+
+query "people over the age of x"  (int x, String y)
+    person : Person( age > x, location == y )
+end
+
+
+--- Domain Specific Languages ---
+
+DSLs have no impact on the rules at runtime, they are just a parse/compile time feature.
+
+[when]This is {something}=Something(something=={something})
 
 

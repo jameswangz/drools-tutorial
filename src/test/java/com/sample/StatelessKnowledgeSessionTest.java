@@ -3,10 +3,13 @@ package com.sample;
 import java.util.Arrays;
 
 import org.drools.KnowledgeBase;
+import org.drools.builder.ResourceType;
 import org.drools.runtime.StatelessKnowledgeSession;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.google.common.collect.ImmutableMap;
 
 
 public class StatelessKnowledgeSessionTest extends Assert {
@@ -27,7 +30,7 @@ public class StatelessKnowledgeSessionTest extends Assert {
 	}
 
 	private KnowledgeBase kbase() {
-		return KnowledgeBases.of("license_applicant.drl");
+		return KnowledgeBases.of(ImmutableMap.of("license_applicant.drl", ResourceType.DRL));
 	}
 
 	@Test
