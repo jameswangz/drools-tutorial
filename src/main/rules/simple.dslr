@@ -1,5 +1,5 @@
 #created on: 2010-11-10
-package com.sample
+package com.snda.infrastrure.drools.tutorial
 
 
 expander simple.dsl

@@ -1,5 +1,5 @@
 #created on: 2010-11-4
-package com.sample
+package com.snda.infrastrure.drools.tutorial
 
 rule "Is of valid age"
 	when
