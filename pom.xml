@@ -14,9 +14,15 @@
 		</developer>
 	</developers>
 	<repositories>
+		<!--
 		<repository>
 			<id>snda</id>
 			<url>http://192.168.90.69:8081/nexus/content/groups/public</url>
+		</repository>
+		-->
+		<repository>
+			<id>jboss</id>
+			<url>http://repository.jboss.org/nexus/content/groups/public-jboss/</url>
 		</repository>
 	</repositories>
 	<build>
