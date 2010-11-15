@@ -2,6 +2,7 @@ package com.snda.infrastructure.drools.tutorial.validation;
 
 import hamcrest.Ensure;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -45,34 +46,58 @@ public class ValidationTest extends Ensure {
 	
 	@Test
 	public void addressRequired() {
-		Customer customer = new Customer();
+		Customer customer = basicCustomer();
 		ensureThat(customer.getAddress(), isNull());
 		assertReportContains(Message.Type.WARNING, "addressRequired", customer);
 		customer.setAddress(new Address());
 		assertNotReportContains(Message.Type.WARNING, "addressRequired", customer);
 	}
 
-	private void assertReportContains(Message.Type type, String messageKey, Customer customer, Object... contexts) {
-		ValidationReport report = reportFactory.createValidationReport();
-		List<Command<?>> commands = Lists.newArrayList();
-		commands.add(CommandFactory.newSetGlobal("validationReport", report));
-		commands.add(CommandFactory.newInsertElements(getFacts(customer)));
-		session.execute(CommandFactory.newBatchExecution(commands));
-		ensureThat(report.contains(messageKey));
-		Message message = report.getMessage(messageKey);
-		ensureThat(message.getContextOrdered(), shouldBe(Arrays.asList(contexts)));
+	private Customer basicCustomer() {
+		Customer customer = new Customer();
+		customer.addAccount(new Account());
+		return customer;
 	}
-	
 
 	private Iterable<Object> getFacts(Customer customer) {
 		List<Object> facts = new ArrayList<Object>();
 		facts.add(customer);
 		facts.add(customer.getAddress());
 		facts.addAll(customer.getAccounts());
-		return facts ;
+		return facts;
 	}
 
+	private void assertReportContains(Message.Type type, String messageKey, Customer customer, Object... contexts) {
+		ValidationReport report = execute(customer);
+		ensureThat(report.contains(messageKey));
+		Message message = report.getMessage(messageKey);
+		ensureThat(message.getContextOrdered(), shouldBe(Arrays.asList(contexts)));
+	}
+
+	private ValidationReport execute(Customer customer) {
+		ValidationReport report = reportFactory.createValidationReport();
+		List<Command<?>> commands = Lists.newArrayList();
+		commands.add(CommandFactory.newSetGlobal("validationReport", report));
+		commands.add(CommandFactory.newInsertElements(getFacts(customer)));
+		session.execute(CommandFactory.newBatchExecution(commands));
+		return report;
+	}
+	
 	private void assertNotReportContains(Message.Type type, String messageKey, Customer customer, Object... contexts) {
+		ValidationReport report = execute(customer);
+		ensureThat(not(report.contains(messageKey)));
+	}
+	
+	@Test
+	public void accountBalanceAtLeast() {
+		Customer customer = basicCustomer();
+		Account account = customer.getAccounts().iterator().next();
+		ensureThat(account.getBalance(), shouldBe(BigDecimal.ZERO));
+		assertReportContains(Message.Type.WARNING, "accountBalanceAtLeast", customer, account);
+		account.setBalance(new BigDecimal("54.00"));
+		assertReportContains(Message.Type.WARNING, "accountBalanceAtLeast", customer, account);
+		account.setBalance(new BigDecimal("101.00"));
+		assertNotReportContains(Message.Type.WARNING, "accountBalanceAtLeast", customer, account);
 	}
 	
 	

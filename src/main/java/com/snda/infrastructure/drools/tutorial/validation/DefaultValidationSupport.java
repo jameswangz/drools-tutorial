@@ -1,16 +1,16 @@
 package com.snda.infrastructure.drools.tutorial.validation;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.Maps;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.googlecode.functionalcollections.FunctionalIterables;
 
 public class DefaultValidationSupport implements ValidationReport {
 	
-	private Map<Message.Type, Message> messagesMap = Maps.newHashMap();
+	private Multimap<Message.Type, Message> messagesMap = HashMultimap.create();
 	
 	@Override
 	public boolean contains(final String messageKey) {

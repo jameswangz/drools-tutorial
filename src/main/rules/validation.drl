@@ -18,5 +18,11 @@ rule "addressRequired"
 		warning(kcontext);
 end
 
+rule "accountBalanceAtLeast"
+	when
+		$account : Account( balance < 100 )
+	then
+		warning(kcontext, $account);
+end
 
 
