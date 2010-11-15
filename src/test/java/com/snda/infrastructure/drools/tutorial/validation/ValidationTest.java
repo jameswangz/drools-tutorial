@@ -100,6 +100,10 @@ public class ValidationTest extends Ensure {
 		assertNotReportContains(Message.Type.WARNING, "accountBalanceAtLeast", customer, account);
 	}
 	
+	@Test
+	public void studentAccountCustomerAgeLessThan() {
+		
+	}
 	
 	
 }
