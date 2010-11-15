@@ -12,4 +12,6 @@ public class ValidationHelper {
 		valiationReport.addMessage(reportFactory.createMessage(Message.Type.WARNING, kcontext.getRule().getName(), context));
 	}
 	
+	
+	
 }

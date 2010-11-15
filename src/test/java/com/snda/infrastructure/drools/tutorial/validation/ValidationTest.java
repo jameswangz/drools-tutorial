@@ -15,6 +15,7 @@ import org.drools.command.Command;
 import org.drools.command.CommandFactory;
 import org.drools.conf.SequentialOption;
 import org.drools.runtime.StatelessKnowledgeSession;
+import org.joda.time.DateMidnight;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -102,6 +103,7 @@ public class ValidationTest extends Ensure {
 	
 	@Test
 	public void studentAccountCustomerAgeLessThan() {
+		DateMidnight now = new DateMidnight();
 		
 	}
 	
