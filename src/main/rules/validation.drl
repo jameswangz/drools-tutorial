@@ -1,10 +1,22 @@
 #created on: Nov 15, 2010
-package com.snda.infrastrure.drools.tutorial.validation
+package com.snda.infrastructure.drools.tutorial.validation
 
-#list any import classes here.
+import org.drools.runtime.rule.RuleContext;
 
+import com.snda.infrastructure.drools.tutorial.validation.*;
 
+global ReportFactory reportFactory;
+global BankingInquiryService bankingInquiryService;
+global ValidationReport validationReport;
 
-#declare any global variables here
+import function com.snda.infrastructure.drools.tutorial.validation.ValidationHelper.*;
+
+rule "addressRequired"
+	when
+		Customer( address == null )
+	then
+		warning(kcontext);
+end
+
 
 
