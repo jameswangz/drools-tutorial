@@ -30,4 +30,8 @@ public abstract class Ensure {
 		return new IsNot<T>(new IsNull<T>());
 	}
 
+	public static <T> Matcher<T> isNull() {
+		return new IsNull<T>();
+	}
+
 }

@@ -1,5 +1,7 @@
 package com.snda.infrastrure.drools.tutorial.validation;
 
+import hamcrest.Ensure;
+
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseConfiguration;
 import org.drools.KnowledgeBaseFactory;
@@ -13,7 +15,7 @@ import com.google.common.collect.ImmutableMap;
 import com.snda.infrastrure.drools.tutorial.KnowledgeBases;
 
 
-public class ValidationTest {
+public class ValidationTest extends Ensure {
 	
 	private ReportFactory reportFactory;
 	private StatelessKnowledgeSession session;
@@ -36,7 +38,17 @@ public class ValidationTest {
 	
 	@Test
 	public void addressRequired() {
-		
+		Customer customer = new Customer();
+		ensureThat(customer.getAddress(), isNull());
+		assertReportContains(Message.Type.WARNING, "addressRequired", customer);
+		customer.setAddress(new Address());
+		assertNotReportContains(Message.Type.WARNING, "addressRequired", customer);
+	}
+
+	private void assertReportContains(Message.Type type, String messageKey, Customer customer, Object... contexts) {
+	}
+	
+	private void assertNotReportContains(Message.Type type, String messageKey, Customer customer, Object... contexts) {
 	}
 	
 	
