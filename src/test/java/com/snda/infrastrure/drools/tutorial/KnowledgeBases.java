@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.drools.KnowledgeBase;
+import org.drools.KnowledgeBaseConfiguration;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderError;
@@ -14,7 +15,7 @@ import org.drools.io.ResourceFactory;
 
 public abstract class KnowledgeBases {
 
-	public static KnowledgeBase of(Map<String, ResourceType> resourceMap) {
+	public static KnowledgeBase of(Map<String, ResourceType> resourceMap, KnowledgeBaseConfiguration conf) {
 		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 		
 		for (Entry<String, ResourceType> entry : resourceMap.entrySet()) {
@@ -30,7 +31,14 @@ public abstract class KnowledgeBases {
 			throw new IllegalArgumentException("Couldn't parse knowledge");
 		}
 		
-		KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
+		KnowledgeBase kbase = null;
+		
+		if (conf == null) {
+			kbase = KnowledgeBaseFactory.newKnowledgeBase();
+		} else {
+			kbase = KnowledgeBaseFactory.newKnowledgeBase(conf);			
+		}
+		
 		kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
 		return kbase;
 	}

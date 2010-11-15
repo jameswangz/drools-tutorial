@@ -30,7 +30,7 @@ public class StatelessKnowledgeSessionTest extends Assert {
 	}
 
 	private KnowledgeBase kbase() {
-		return KnowledgeBases.of(ImmutableMap.of("license_applicant.drl", ResourceType.DRL));
+		return KnowledgeBases.of(ImmutableMap.of("license_applicant.drl", ResourceType.DRL), null);
 	}
 
 	@Test

@@ -23,7 +23,7 @@ public class StatefulKnowledgeSessionTest extends Ensure {
 
 	@Test
 	public void test() {
-		KnowledgeBase kbase = KnowledgeBases.of(ImmutableMap.of("fire_alarm.drl", ResourceType.DRL));
+		KnowledgeBase kbase = KnowledgeBases.of(ImmutableMap.of("fire_alarm.drl", ResourceType.DRL), null);
 		StatefulKnowledgeSession ksession = kbase.newStatefulKnowledgeSession();
 
 		String[] names = new String[] {KITCHEN, BEDROOM, OFFICE, LIVINGROOM};

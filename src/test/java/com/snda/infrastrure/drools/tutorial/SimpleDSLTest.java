@@ -30,7 +30,8 @@ public class SimpleDSLTest extends Ensure {
 			ImmutableMap.of(
 				"simple.dsl", ResourceType.DSL, 
 				"simple.dslr", ResourceType.DSLR
-			)
+			), 
+			null
 		);
 	}
 	
