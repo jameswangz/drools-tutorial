@@ -94,17 +94,27 @@ public class ValidationTest extends Ensure {
 		Customer customer = basicCustomer();
 		Account account = customer.getAccounts().iterator().next();
 		ensureThat(account.getBalance(), shouldBe(BigDecimal.ZERO));
-		assertReportContains(Message.Type.WARNING, "accountBalanceAtLeast", customer, account);
+		String rule = "accountBalanceAtLeast";
+		assertReportContains(Message.Type.WARNING, rule, customer, account);
 		account.setBalance(new BigDecimal("54.00"));
-		assertReportContains(Message.Type.WARNING, "accountBalanceAtLeast", customer, account);
+		assertReportContains(Message.Type.WARNING, rule, customer, account);
 		account.setBalance(new BigDecimal("101.00"));
-		assertNotReportContains(Message.Type.WARNING, "accountBalanceAtLeast", customer, account);
+		assertNotReportContains(Message.Type.WARNING, rule, customer, account);
 	}
 	
 	@Test
 	public void studentAccountCustomerAgeLessThan() {
+		String rule = "studentAccountCustomerAgeLessThan";
 		DateMidnight now = new DateMidnight();
-		
+		Customer customer = basicCustomer();
+		Account account = customer.getAccounts().iterator().next();
+		customer.setDateOfBirth(now.minusYears(40).toDate());
+		ensureThat(account.getType(), shouldBe(Account.Type.TRANSACTIONAL));
+		assertNotReportContains(Message.Type.ERROR, rule, customer);
+		account.setType(Account.Type.STUDENT);
+		assertReportContains(Message.Type.ERROR, rule, customer, account);
+		customer.setDateOfBirth(now.minusYears(20).toDate());
+		assertNotReportContains(Message.Type.ERROR, rule, customer, account);
 	}
 	
 	

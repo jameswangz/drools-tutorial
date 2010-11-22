@@ -25,4 +25,12 @@ rule "accountBalanceAtLeast"
 		warning(kcontext, $account);
 end
 
+rule "studentAccountCustomerAgeLessThan"
+	when
+		$customer : Customer( eval(yearsPassedSince(dateOfBirth) >= 27) )
+		$account : Account( customer == $customer, type == Account.Type.STUDENT )
+	then
+		error(kcontext, $account);
+end
+
 
