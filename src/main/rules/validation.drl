@@ -6,7 +6,7 @@ import org.drools.runtime.rule.RuleContext;
 import com.snda.infrastructure.drools.tutorial.validation.*;
 
 global ReportFactory reportFactory;
-global BankingInquiryService bankingInquiryService;
+global BankingInquiryService inquiryService;
 global ValidationReport validationReport;
 
 import function com.snda.infrastructure.drools.tutorial.validation.ValidationHelper.*;
@@ -29,6 +29,13 @@ rule "studentAccountCustomerAgeLessThan"
 	when
 		$customer : Customer( eval(yearsPassedSince(dateOfBirth) >= 27) )
 		$account : Account( customer == $customer, type == Account.Type.STUDENT )
+	then
+		error(kcontext, $account);
+end
+
+rule "accountNumberUnique"
+	when
+		$account : Account( eval(!inquiryService.isAccountNumberUnique($account)) )
 	then
 		error(kcontext, $account);
 end

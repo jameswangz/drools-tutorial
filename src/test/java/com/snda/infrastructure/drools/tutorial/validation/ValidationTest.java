@@ -31,18 +31,21 @@ public class ValidationTest extends Ensure {
 
 	@Before
 	public void initialize() {
-		BankingInquiryService inquiryService = new BankInquiryServiceImpl();
 		reportFactory = new DefaultReportFactory();
-		initializeSession(inquiryService, reportFactory);
+		initializeSession(reportFactory);
 	}
 
-	private void initializeSession(BankingInquiryService inquiryService, ReportFactory reportFactory) {
+	private void initializeSession(ReportFactory reportFactory) {
 		KnowledgeBaseConfiguration conf = KnowledgeBaseFactory.newKnowledgeBaseConfiguration();
 		conf.setOption(SequentialOption.YES);
 		KnowledgeBase kbase = KnowledgeBases.of(ImmutableMap.of("validation.drl", ResourceType.DRL), conf);
 		session = kbase.newStatelessKnowledgeSession();
-		session.setGlobal("inquiryService", inquiryService);
 		session.setGlobal("reportFactory", reportFactory);
+		session.setGlobal("inquiryService", new BankingInquiryService() {
+			public boolean isAccountNumberUnique(Account account) {
+				return false;
+			}
+		});
 	}
 	
 	@Test
@@ -116,6 +119,14 @@ public class ValidationTest extends Ensure {
 		customer.setDateOfBirth(now.minusYears(20).toDate());
 		assertNotReportContains(Message.Type.ERROR, rule, customer, account);
 	}
+	
+	@Test
+	public void accontNumberUnique() {
+		Customer customer = basicCustomer();
+		Account account = customer.getAccounts().iterator().next();
+		assertReportContains(Message.Type.ERROR, "accountNumberUnique", customer, account);
+	}
+	
 	
 	
 }
